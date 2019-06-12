@@ -1,16 +1,13 @@
-%bcond_without check 
+%bcond_without check
 
-Name:           pew 
-Version:        1.1.2
-Release:        4%{?dist}
+Name:           pew
+Version:        1.2.0
+Release:        1%{?dist}
 Summary:        Tool to manage multiple virtualenvs written in pure Python
 
 License:        MIT
 URL:            https://github.com/berdario/pew
-Source0:        https://github.com/berdario/%{name}/archive/%{version}/%{name}-%{version}.tar.gz 
-
-# Add pytest marker to test requiring connection
-Patch0:         0001-tests-connection-marker-fix.patch
+Source0:        https://github.com/berdario/%{name}/archive/%{version}/%{name}-%{version}.tar.gz
 
 BuildArch:      noarch
 BuildRequires:  python3-devel
@@ -37,7 +34,7 @@ single command to switch to them wherever you are, while keeping them in a
 single (configurable) location.
 
 %prep
-%autosetup -p1 -n %{name}-%{version}
+%autosetup -n %{name}-%{version}
 
 # This script for shell completion can't be used for Fedora package
 rm -rf %{name}/shell_config/complete_deploy
@@ -63,6 +60,10 @@ py.test-3 -vv tests
 %{python3_sitelib}/%{name}-%{version}-py?.?.egg-info
 
 %changelog
+* Wed Jun 12 2019 Tadej Janež <tadej.j@nez.si> 1.2.0-1
+- Update to 1.2.0 release
+- Drop the tests-connection-marker-fix patch since it has been upstreamed
+
 * Fri Jul 13 2018 Fedora Release Engineering <releng@fedoraproject.org> - 1.1.2-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_29_Mass_Rebuild
 

@@ -28,6 +28,7 @@ Source1:        README.md
 Patch0:         0001-Remove-Python-version-management-on-Fedora.patch
 
 BuildArch:      noarch
+
 BuildRequires:  python3-devel
 BuildRequires:  python3dist(setuptools)
 BuildRequires:  python3dist(virtualenv) >= 1.11
@@ -43,13 +44,19 @@ BuildRequires:  python3dist(pytest)
 BuildRequires:  python3dist(pip)
 %endif
 
-%{?python_provide:%python_provide python3-%{name}}
-Requires:       python3dist(setuptools) >= 17.1
-Requires:       python3dist(virtualenv) >= 1.11
-Requires:       python3dist(virtualenv-clone) >= 0.2.5
+# NOTE: The automatic Python dependency generator is enabled by default in
+# Fedora 30+.
+%if 0%{?fedora} == 29
+%{?python_enable_dependency_generator}
+%endif
+
 %if %{with py_ver_management}
+# NOTE: The pythonz-bd dependency is not included by automatic dependency
+# generator because it is defined as the pythonz extra requirement in setup.py.
 Requires:       python3dist(pythonz-bd) >= 1.10.2
 %endif
+
+%{?python_provide:%python_provide python3-%{name}}
 
 %description
 Python Env Wrapper is a set of commands to manage multiple virtual
@@ -97,6 +104,7 @@ py.test-3 -vv tests
 - Update to 1.2.0 release
 - Drop the tests-connection-marker-fix patch since it has been upstreamed
 - Remove Python version management functionality in Fedora 30+
+- Use automatic Python dependency generator
 
 * Fri Jul 13 2018 Fedora Release Engineering <releng@fedoraproject.org> - 1.1.2-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_29_Mass_Rebuild

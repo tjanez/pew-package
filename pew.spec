@@ -8,15 +8,15 @@
 %bcond_without py_ver_management
 %endif
 
-Name:           pew
-Version:        1.2.0
-Release:        1%{?dist}
-Summary:        Tool to manage multiple virtualenvs written in pure Python
+Name: pew
+Version: 1.2.0
+Release: 1%{?dist}
+Summary: Tool to manage multiple virtualenvs written in pure Python
 
-License:        MIT
-URL:            https://github.com/berdario/pew
-Source0:        https://github.com/berdario/%{name}/archive/%{version}/%{name}-%{version}.tar.gz
-Source1:        README.md
+License: MIT
+URL: https://github.com/berdario/pew
+Source0: https://github.com/berdario/%{name}/archive/%{version}/%{name}-%{version}.tar.gz
+Source1: README.md
 
 # This patch removes Python version management on Fedora.
 #
@@ -25,23 +25,23 @@ Source1:        README.md
 # Furthermore, there is strong support upstream to either remove Pew's
 # Python version management or replace it with pyenv:
 # https://github.com/berdario/pew/issues/195.
-Patch0:         0001-Remove-Python-version-management-on-Fedora.patch
+Patch0: 0001-Remove-Python-version-management-on-Fedora.patch
 
-BuildArch:      noarch
+BuildArch: noarch
 
-BuildRequires:  python3-devel
-BuildRequires:  python3dist(setuptools)
-BuildRequires:  python3dist(virtualenv) >= 1.11
-BuildRequires:  python3dist(virtualenv-clone) >= 0.2.5
+BuildRequires: python3-devel
+BuildRequires: python3dist(setuptools)
+BuildRequires: python3dist(virtualenv) >= 1.11
+BuildRequires: python3dist(virtualenv-clone) >= 0.2.5
 %if %{with py_ver_management}
-BuildRequires:  python3dist(pythonz-bd) >= 1.10.2
+BuildRequires: python3dist(pythonz-bd) >= 1.10.2
 %endif
 # Required for %%autosetup.
-BuildRequires:  git-core
+BuildRequires: git-core
 
 %if %{with check}
-BuildRequires:  python3dist(pytest)
-BuildRequires:  python3dist(pip)
+BuildRequires: python3dist(pytest)
+BuildRequires: python3dist(pip)
 %endif
 
 # NOTE: The automatic Python dependency generator is enabled by default in
@@ -53,7 +53,7 @@ BuildRequires:  python3dist(pip)
 %if %{with py_ver_management}
 # NOTE: The pythonz-bd dependency is not included by automatic dependency
 # generator because it is defined as the pythonz extra requirement in setup.py.
-Requires:       python3dist(pythonz-bd) >= 1.10.2
+Requires: python3dist(pythonz-bd) >= 1.10.2
 %endif
 
 %{?python_provide:%python_provide python3-%{name}}
@@ -63,6 +63,7 @@ Python Env Wrapper is a set of commands to manage multiple virtual
 environments. Pew can create, delete and copy your environments, using a
 single command to switch to them wherever you are, while keeping them in a
 single (configurable) location.
+
 
 %prep
 %autosetup -n %{name}-%{version} -N -S git
@@ -79,11 +80,14 @@ mv %{SOURCE1} README.Fedora.md
 # This script for shell completion can't be used for Fedora package
 rm -rf %{name}/shell_config/complete_deploy
 
+
 %build
 %py3_build
 
+
 %install
 %py3_install
+
 
 %if %{with check}
 %check
@@ -92,12 +96,14 @@ export PYTHONPATH=$PYTHONPATH:%{buildroot}%{python3_sitelib}
 py.test-3 -vv tests
 %endif
 
+
 %files
 %license LICENSE
 %doc README.md README.Fedora.md
 %{_bindir}/pew
 %{python3_sitelib}/%{name}
 %{python3_sitelib}/%{name}-%{version}-py?.?.egg-info
+
 
 %changelog
 * Wed Jun 12 2019 Tadej Janež <tadej.j@nez.si> 1.2.0-1
